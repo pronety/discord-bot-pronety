@@ -1,5 +1,5 @@
 import { AppCommandInteraction } from "./utils/mod.ts";
-import { ping } from "./slash/mod.ts";
+import { ping, verifikasi } from "./slash/mod.ts";
 import nacl from "cdn:tweetnacl";
 import { json, serve, validateRequest } from "x:shift";
 import {
@@ -8,7 +8,6 @@ import {
   MessageComponent,
 } from "./utils/interactions.ts";
 import "std/dotenv/load.ts";
-import { verifikasi } from "./slash/verifikasi.ts";
 
 export const discordAPI = "https://discord.com/api/v9";
 
