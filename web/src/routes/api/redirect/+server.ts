@@ -10,8 +10,6 @@ import type { RequestHandler } from "./$types";
 export const GET: RequestHandler = async ({ cookies, url }) => {
   const code = url.searchParams.get("code");
 
-  console.log({ code });
-
   if (!code) {
     return new Response(JSON.stringify({ message: "No code" }), {
       status: 400,
@@ -28,8 +26,6 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
   });
 
   const data = await response.json();
-
-  console.log(data);
 
   cookies.set("discord_access_token", data.access_token, {
     path: "/",

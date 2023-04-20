@@ -36,8 +36,6 @@ export const actions: Actions = {
       !email.endsWith("@student.undiksha.ac.id") &&
       !email.endsWith("@undiksha.ac.id")
     ) {
-      console.log("invalid");
-
       return fail(400, {
         email,
         message: "Email harus merupakan email undiksha",
