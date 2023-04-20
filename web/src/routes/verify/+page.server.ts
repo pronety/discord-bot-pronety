@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 
   if (!key) {
     return {
-      error: "No key provided",
+      error: "Sepertinya anda tersesat! Key tidak ditemukan",
     };
   }
 
@@ -27,6 +27,6 @@ export const load: PageServerLoad = async ({ url, locals }) => {
   const success = await assignRoleUndiksha(verification.discord_id, guild_id);
 
   return {
-    success,
+    error: !success ? "Gagal mengirimkan Email! Silahkan coba lagi" : "",
   };
 };

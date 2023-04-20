@@ -1,4 +1,4 @@
-import { redirect } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import { createTransport, type TransportOptions } from "nodemailer";
 import { PUBLIC_DISCORD_OAUTH_URL } from "$env/static/public";
@@ -13,9 +13,7 @@ import { createNewVerification } from "$lib/server/db";
 
 export const load: PageServerLoad = async ({ locals }) => {
   if (!locals.user) {
-    console.log(PUBLIC_DISCORD_OAUTH_URL);
-
-    throw redirect(302, PUBLIC_DISCORD_OAUTH_URL);
+    throw redirect(302, "/");
   }
   return {
     user: locals.user,
@@ -24,13 +22,29 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
   kirimEmail: async ({ request, locals, url }) => {
-    const formData = Object.fromEntries(
+    if (!locals.user) {
+      throw redirect(302, "/");
+    }
+
+    let { email } = Object.fromEntries(
       await request.formData(),
     ) as { email: string };
 
-    console.log(formData);
+    email = email.trim();
 
-    const key = await createNewVerification(formData.email, locals.user!.id);
+    if (
+      !email.endsWith("@student.undiksha.ac.id") &&
+      !email.endsWith("@undiksha.ac.id")
+    ) {
+      console.log("invalid");
+
+      return fail(400, {
+        email,
+        message: "Email harus merupakan email undiksha",
+      });
+    }
+
+    const key = await createNewVerification(email, locals.user.id);
 
     const transport = createTransport({
       service: "gmail",
@@ -46,27 +60,21 @@ export const actions: Actions = {
 
     const verifyUrl = `${url.origin}/verify?key=${key}`;
 
-    console.log({ verifyUrl });
-
     transport.sendMail({
       from: EMAIL,
-      to: formData.email,
+      to: email,
       subject:
-        `Apakah benar ini Anda? ${locals.user?.username} #${locals.user?.discriminator}`,
+        `Apakah benar ini Anda? ${locals.user.username} #${locals.user.discriminator}`,
       text:
-        `Seseorang mendaftarkan email ini sebagai email verifikasi untuk mendapat role di server Pronety. Jika benar, silakan klik link di bawah ini
-        ${verifyUrl}`,
+        `Seseorang mendaftarkan email ini sebagai email verifikasi untuk mendapat role di server Pronety. Jika benar, silakan klik link di bawah ini:\n${verifyUrl}`,
     }, (err) => {
       if (err) {
-        console.log(err);
+        return fail(500, { message: "Gagal mengirim email\n\n" + err });
       }
     });
 
     return {
-      status: 200,
-      body: {
-        message: "Email berhasil dikirim",
-      },
+      success: true,
     };
   },
 };

@@ -1,7 +1,8 @@
 <script lang="ts">
-  import type { PageServerData } from "./$types";
+  import type { ActionData, PageServerData } from "./$types";
 
   export let data: PageServerData;
+  export let form: ActionData;
 </script>
 
 <svelte:head>
@@ -12,48 +13,59 @@
   />
 </svelte:head>
 
-<div
-  class="flex items-center justify-center h-screen bg-[url(/bg.jpeg)] -hue-rotate-60 object-cover"
->
-  <div class="p-10 rounded-md shadow-md space-y-4 bg-white hue-rotate-60">
-    <h4>Halo {data.user.username} #{data.user.discriminator}</h4>
-    <p>Masukkan email undiksha anda untuk diverifikasi:</p>
-    <form
-      action="?/kirimEmail"
-      method="POST"
-      class="flex flex-col sm:flex-row gap-2 items-start sm:items-center"
-    >
-      <label class="wrapper">
-        <input
-          type="email"
-          placeholder="Email undiksha"
-          name="email"
-          class="input"
-        />
-        <span class="placeholder">Email undiksha</span>
-      </label>
-      <button type="submit">
-        <div class="svg-wrapper-1">
-          <div class="svg-wrapper">
-            <svg
-              height="24"
-              width="24"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M0 0h24v24H0z" fill="none" />
-              <path
-                d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
-                fill="currentColor"
-              />
-            </svg>
+{#if form?.success}
+  <h1>Email berhasil dikirim!</h1>
+  <p>Silahkan cek kotak pesan email anda</p>
+{:else}
+  <div
+    class="flex items-center justify-center h-screen bg-[url(/bg.jpeg)] -hue-rotate-60 object-cover"
+  >
+    <div class="p-10 rounded-md shadow-md space-y-4 bg-white hue-rotate-60">
+      <h4>Halo {data.user.username} #{data.user.discriminator}</h4>
+      <p>Masukkan email undiksha anda untuk diverifikasi:</p>
+
+      <form
+        action="?/kirimEmail"
+        method="POST"
+        class="flex flex-col sm:flex-row gap-2 items-start sm:items-center"
+      >
+        <label class="wrapper">
+          <input
+            required
+            value={form?.email || ""}
+            type="email"
+            placeholder="Email undiksha"
+            name="email"
+            class="input"
+          />
+          <span class="placeholder">Email undiksha</span>
+        </label>
+        <button type="submit">
+          <div class="svg-wrapper-1">
+            <div class="svg-wrapper">
+              <svg
+                height="24"
+                width="24"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
           </div>
-        </div>
-        <span>Kirim</span>
-      </button>
-    </form>
+          <span>Kirim</span>
+        </button>
+      </form>
+      {#if form?.email}
+        <small class="text-red-500">{form.message}</small>
+      {/if}
+    </div>
   </div>
-</div>
+{/if}
 
 <style>
   .wrapper {
