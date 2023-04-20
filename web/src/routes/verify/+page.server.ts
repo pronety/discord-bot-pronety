@@ -3,7 +3,7 @@ import type { PageServerLoad } from "./$types";
 import { getVerification } from "$lib/server/db";
 import { assignRoleUndiksha } from "$lib/server/discord";
 
-const guild_id = "920555689850576907";
+const guild_id = "1097354795335037018";
 
 export const load: PageServerLoad = async ({ url, locals }) => {
   const key = url.searchParams.get("key");

@@ -7,7 +7,7 @@ import type { User } from "$lib/types";
 import type { Cookies } from "@sveltejs/kit";
 
 export const discordAPI = "https://discord.com/api/v9";
-export const undikshaRoleID = "1098478545388458007";
+export const undikshaRoleID = "779421353153003551";
 
 export function isLoggedIn(cookie: Cookies) {
   return cookie.get("discord_refresh_session") !== undefined;
