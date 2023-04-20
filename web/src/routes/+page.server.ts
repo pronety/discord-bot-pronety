@@ -13,7 +13,7 @@ import { createNewVerification } from "$lib/server/db";
 
 export const load: PageServerLoad = async ({ locals }) => {
   if (!locals.user) {
-    throw redirect(302, "/");
+    throw redirect(302, PUBLIC_DISCORD_OAUTH_URL);
   }
   return {
     user: locals.user,
