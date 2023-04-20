@@ -27,6 +27,6 @@ export const load: PageServerLoad = async ({ url, locals }) => {
   const success = await assignRoleUndiksha(verification.discord_id, guild_id);
 
   return {
-    error: !success ? "Gagal mengirimkan Email! Silahkan coba lagi" : "",
+    error: !success ? "Gagal menambahkan Role! Silahkan coba lagi nanti" : "",
   };
 };

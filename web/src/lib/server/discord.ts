@@ -25,6 +25,8 @@ export async function assignRoleUndiksha(discord_id: string, guild_id: string) {
     },
   );
 
+  console.log(response);
+
   return response.ok;
 }
 
