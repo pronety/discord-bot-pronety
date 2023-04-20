@@ -26,8 +26,6 @@ export async function assignRoleUndiksha(discord_id: string) {
     },
   );
 
-  console.log(response);
-
   return response.ok;
 }
 
