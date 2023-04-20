@@ -1,0 +1,32 @@
+import { redirect } from "@sveltejs/kit";
+import type { PageServerLoad } from "./$types";
+import { getVerification } from "$lib/server/db";
+import { assignRoleUndiksha } from "$lib/server/discord";
+
+const guild_id = "920555689850576907";
+
+export const load: PageServerLoad = async ({ url, locals }) => {
+  const key = url.searchParams.get("key");
+
+  if (!key) {
+    return {
+      error: "No key provided",
+    };
+  }
+
+  if (!locals.user) {
+    throw redirect(302, "/");
+  }
+
+  const verification = await getVerification(key);
+
+  if (!verification) {
+    throw redirect(302, "/");
+  }
+
+  const success = await assignRoleUndiksha(verification.discord_id, guild_id);
+
+  return {
+    success,
+  };
+};
