@@ -18,7 +18,7 @@
   <p>Silahkan cek kotak pesan email anda</p>
 {:else}
   <div
-    class="flex items-center justify-center h-screen bg-[url(/bg.jpeg)] -hue-rotate-60 object-cover"
+    class="flex items-center justify-center h-screen bg-[url(/bg.webp)] -hue-rotate-60 object-cover"
   >
     <div class="p-10 rounded-md shadow-md space-y-4 bg-white hue-rotate-60">
       <h4>Halo {data.user.username} #{data.user.discriminator}</h4>
