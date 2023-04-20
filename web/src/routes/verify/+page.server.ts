@@ -3,8 +3,6 @@ import type { PageServerLoad } from "./$types";
 import { getVerification } from "$lib/server/db";
 import { assignRoleUndiksha } from "$lib/server/discord";
 
-const guild_id = "1097354795335037018";
-
 export const load: PageServerLoad = async ({ url, locals }) => {
   const key = url.searchParams.get("key");
 
@@ -24,7 +22,7 @@ export const load: PageServerLoad = async ({ url, locals }) => {
     throw redirect(302, "/");
   }
 
-  const success = await assignRoleUndiksha(verification.discord_id, guild_id);
+  const success = await assignRoleUndiksha(verification.discord_id);
 
   return {
     error: !success ? "Gagal menambahkan Role! Silahkan coba lagi nanti" : "",

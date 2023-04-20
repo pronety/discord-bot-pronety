@@ -7,13 +7,14 @@ import type { User } from "$lib/types";
 import type { Cookies } from "@sveltejs/kit";
 
 export const discordAPI = "https://discord.com/api/v9";
-export const undikshaRoleID = "779421353153003551";
+export const undikshaRoleID = "1098497633569484890";
+export const guild_id = "1097354795335037018";
 
 export function isLoggedIn(cookie: Cookies) {
   return cookie.get("discord_refresh_session") !== undefined;
 }
 
-export async function assignRoleUndiksha(discord_id: string, guild_id: string) {
+export async function assignRoleUndiksha(discord_id: string) {
   const response = await fetch(
     `${discordAPI}/guilds/${guild_id}/members/${discord_id}/roles/${undikshaRoleID}`,
     {
