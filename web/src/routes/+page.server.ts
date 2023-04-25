@@ -67,8 +67,9 @@ export const actions: Actions = {
         `Seseorang mendaftarkan email ini sebagai email verifikasi untuk mendapat role di server Pronety. Jika benar, silakan klik link di bawah ini:\n${verifyUrl}`,
     }, (err) => {
       if (err) {
-        return fail(500, { message: "Gagal mengirim email\n\n" + err });
+        console.error("Gagal mengirim email");
       }
+      console.info("Berhasil mengirim email");
     });
 
     return {
