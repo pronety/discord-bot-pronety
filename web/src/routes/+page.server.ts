@@ -58,18 +58,35 @@ export const actions: Actions = {
 
     const verifyUrl = `${url.origin}/verify?key=${key}`;
 
-    transport.sendMail({
-      from: EMAIL,
-      to: email,
-      subject:
-        `Apakah benar ini Anda? ${locals.user.username} #${locals.user.discriminator}`,
-      text:
-        `Seseorang mendaftarkan email ini sebagai email verifikasi untuk mendapat role di server Pronety. Jika benar, silakan klik link di bawah ini:\n${verifyUrl}`,
-    }, (err) => {
-      if (err) {
-        console.error("Gagal mengirim email");
-      }
-      console.info("Berhasil mengirim email");
+    await new Promise((resolve, reject) => {
+      transport.verify(function (error, success) {
+        if (error) {
+          console.error(error);
+          reject(error);
+        } else {
+          console.log("Server is ready to take our messages");
+          resolve(success);
+        }
+      });
+    });
+
+    await new Promise<void>((resolve, reject) => {
+      transport.sendMail({
+        from: EMAIL,
+        to: email,
+        subject: `Apakah benar ini Anda? ${locals.user!.username} #${
+          locals.user!.discriminator
+        }`,
+        text:
+          `Seseorang mendaftarkan email ini sebagai email verifikasi untuk mendapat role di server Pronety. Jika benar, silakan klik link di bawah ini:\n${verifyUrl}`,
+      }, (err) => {
+        if (err) {
+          console.error("Gagal mengirim email");
+          reject("Gagal mengirim email");
+        }
+        console.info("Berhasil mengirim email");
+        resolve();
+      });
     });
 
     return {
