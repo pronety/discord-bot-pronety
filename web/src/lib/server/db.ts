@@ -15,19 +15,11 @@ export async function createNewVerification(email: string, discord_id: string) {
 }
 
 export async function getVerification(key: string) {
-  const data = await prisma.verifying.findUnique({
+  const deleted = await prisma.verifying.delete({
     where: {
       key,
     },
   });
 
-  if (data) {
-    prisma.verifying.delete({
-      where: {
-        key,
-      },
-    });
-  }
-
-  return data;
+  return deleted;
 }
