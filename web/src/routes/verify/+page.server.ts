@@ -19,7 +19,9 @@ export const load: PageServerLoad = async ({ url, locals }) => {
   const verification = await getVerification(key);
 
   if (!verification) {
-    throw redirect(302, "/");
+    return {
+      error: "Gagal menambahkan Role! Key tidak ditemukan",
+    };
   }
 
   const success = await assignRoleUndiksha(verification.discord_id);
