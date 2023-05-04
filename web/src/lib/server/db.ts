@@ -1,25 +1,17 @@
-import { PrismaClient } from "@prisma/client";
+import kv from "@vercel/kv";
 
-const prisma = new PrismaClient();
+type Val = {
+  email: string;
+  discord_id: string;
+};
 
 export async function createNewVerification(email: string, discord_id: string) {
   const key = crypto.randomUUID();
-  await prisma.verifying.create({
-    data: {
-      key,
-      email,
-      discord_id,
-    },
-  });
+  await kv.set<Val>(key, { email, discord_id });
   return key;
 }
 
 export async function getVerification(key: string) {
-  const deleted = await prisma.verifying.delete({
-    where: {
-      key,
-    },
-  });
-
-  return deleted;
+  const verif = await kv.getdel<Val>(key);
+  return verif;
 }
