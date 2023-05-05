@@ -64,7 +64,6 @@ export const actions: Actions = {
           console.error(error);
           reject(error);
         } else {
-          console.log("Server is ready to take our messages");
           resolve(success);
         }
       });
@@ -72,7 +71,7 @@ export const actions: Actions = {
 
     await new Promise<void>((resolve, reject) => {
       transport.sendMail({
-        from: EMAIL,
+        from: `Server Pronety <${EMAIL}>`,
         to: email,
         subject: `Apakah benar ini Anda? ${locals.user!.username} #${
           locals.user!.discriminator
