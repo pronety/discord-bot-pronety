@@ -10,6 +10,8 @@ import {
   GOOGLE_OAUTH_REFRESH_TOKEN,
 } from "$env/static/private";
 import { createNewVerification } from "$lib/server/db";
+import { render } from "svelte-email";
+import Email from "$lib/components/Email.svelte";
 
 export const load: PageServerLoad = async ({ locals }) => {
   if (!locals.user) {
@@ -69,15 +71,21 @@ export const actions: Actions = {
       });
     });
 
-    await new Promise<void>((resolve, reject) => {
+    await new Promise<void>(async (resolve, reject) => {
       transport.sendMail({
         from: `Server Pronety <${EMAIL}>`,
         to: email,
         subject: `Apakah benar ini Anda? ${locals.user!.username} #${
           locals.user!.discriminator
         }`,
-        text:
-          `Seseorang mendaftarkan email ini sebagai email verifikasi untuk mendapat role di server Pronety. Jika benar, silakan klik link di bawah ini:\n${verifyUrl}`,
+        html: render({
+          template: Email as any,
+          props: {
+            discordName: locals.user!.username,
+            discordDiscriminator: locals.user!.discriminator,
+            verifLink: verifyUrl,
+          },
+        }),
       }, (err) => {
         if (err) {
           console.error("Gagal mengirim email");
