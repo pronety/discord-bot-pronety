@@ -17,7 +17,10 @@ export const load: PageServerLoad = async ({ url, locals }) => {
   const verification = await getVerification(key);
 
   if (!verification) {
-    throw error(500, "Gagal menambahkan Role!");
+    throw error(
+      400,
+      "Sepertinya Key yang anda masukkan tidak valid atau telah dihapus"
+    );
   }
 
   const success = await assignRoleUndiksha(verification.discord_id);
