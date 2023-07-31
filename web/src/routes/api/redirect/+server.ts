@@ -21,8 +21,7 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body:
-      `client_id=${DISCORD_CLIENT_ID}&client_secret=${DISCORD_CLIENT_SECRET}&grant_type=authorization_code&code=${code}&redirect_uri=${DISCORD_REDIRECT_URL}`,
+    body: `client_id=${DISCORD_CLIENT_ID}&client_secret=${DISCORD_CLIENT_SECRET}&grant_type=authorization_code&code=${code}&redirect_uri=${DISCORD_REDIRECT_URL}`,
   });
 
   const data = await response.json();

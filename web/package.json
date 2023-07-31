@@ -24,7 +24,6 @@
   },
   "type": "module",
   "dependencies": {
-    "@vercel/kv": "^0.1.1",
     "nodemailer": "^6.9.1",
     "svelte-email": "^0.0.4"
   }

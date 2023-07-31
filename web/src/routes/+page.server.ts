@@ -28,9 +28,9 @@ export const actions: Actions = {
       throw redirect(302, "/");
     }
 
-    let { email } = Object.fromEntries(
-      await request.formData(),
-    ) as { email: string };
+    let { email } = Object.fromEntries(await request.formData()) as {
+      email: string;
+    };
 
     email = email.trim();
 
@@ -72,28 +72,31 @@ export const actions: Actions = {
     });
 
     await new Promise<void>(async (resolve, reject) => {
-      transport.sendMail({
-        from: `Server Pronety <${EMAIL}>`,
-        to: email,
-        subject: `Apakah benar ini Anda? ${locals.user!.username} #${
-          locals.user!.discriminator
-        }`,
-        html: render({
-          template: Email as any,
-          props: {
-            discordName: locals.user!.username,
-            discordDiscriminator: locals.user!.discriminator,
-            verifLink: verifyUrl,
-          },
-        }),
-      }, (err) => {
-        if (err) {
-          console.error("Gagal mengirim email");
-          reject("Gagal mengirim email");
+      transport.sendMail(
+        {
+          from: `Server Pronety <${EMAIL}>`,
+          to: email,
+          subject: `Apakah benar ini Anda? ${locals.user!.username} #${
+            locals.user!.discriminator
+          }`,
+          html: render({
+            template: Email as any,
+            props: {
+              discordName: locals.user!.username,
+              discordDiscriminator: locals.user!.discriminator,
+              verifLink: verifyUrl,
+            },
+          }),
+        },
+        (err) => {
+          if (err) {
+            console.error("Gagal mengirim email");
+            reject("Gagal mengirim email");
+          }
+          console.info("Berhasil mengirim email");
+          resolve();
         }
-        console.info("Berhasil mengirim email");
-        resolve();
-      });
+      );
     });
 
     return {
