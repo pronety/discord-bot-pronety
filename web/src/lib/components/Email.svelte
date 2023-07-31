@@ -49,9 +49,9 @@
   <Section>
     <Container>
       <Text style={paragraph}
-        >Seseorang mendaftarkan email ini sebagai email verifikasi untuk
-        mendapat role di server Pronety. Jika benar, silakan klik link di bawah
-        ini:</Text
+        >Akun discord dengan nama {discordName} #{discordDiscriminator} mendaftarkan
+        email ini sebagai email verifikasi untuk mendapat role di server Pronety.
+        Jika benar, silakan klik link di bawah ini:</Text
       >
       <Button style={button} href={verifLink}>Verifikasi</Button>
     </Container>
